@@ -21,6 +21,7 @@ class Facebook implements ProviderInterface
     const NAME = 'facebook';
     const SHARE_URL = 'https://www.facebook.com/sharer/sharer.php?u=%s';
     const API_URL = 'https://graph.facebook.com/?id=%s';
+    const API_URL_OLD = 'https://api.facebook.com/restserver.php?&method=links.getStats&urls=%s&format=json-strings';
 
     /**
      * {@inheritdoc}
