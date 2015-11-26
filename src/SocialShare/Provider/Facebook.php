@@ -43,15 +43,28 @@ class Facebook implements ProviderInterface
      */
     public function getShares($url)
     {
-        // $data = json_decode(file_get_contents(sprintf(self::API_URL, urlencode($url))));
+        $data = json_decode(@file_get_contents(sprintf(self::API_URL, urlencode($url))));
 
-        // if (isset($data->likes)) {
-        //     return intval($data->likes);
-        // }
-        // if (isset($data->shares)) {
-        //     return intval($data->shares);
-        // }
+        if (strpos($http_response_header[0], "200")) { 
+            if (isset($data->likes)) {
+                return intval($data->likes);
+            }
+            if (isset($data->shares)) {
+                return intval($data->shares);
+            }       
+        } else { 
+            // Retry using the old rest API
+            $data = json_decode(@file_get_contents(sprintf(self::API_URL_OLD, urlencode($url))));
 
-        return 110;
+            if (isset($data[0]->like_count)) {
+                return intval($data[0]->like_count);
+            }
+
+            if (isset($data[0]->share_count)) {
+                return intval($data[0]->share_count);
+            }
+        }
+    
+        return 0;
     }
 }
