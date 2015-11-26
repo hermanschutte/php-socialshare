@@ -45,8 +45,12 @@ class Twitter implements ProviderInterface
      */
     public function getShares($url)
     {
-        $data = json_decode(file_get_contents(sprintf(self::API_URL, urlencode($url))));
+        $data = json_decode(@file_get_contents(sprintf(self::API_URL, urlencode($url))));
 
-        return intval($data->count);
+        if (strpos($http_response_header[0], "200")) { 
+            return intval($data->count);
+        } else {
+            return 0;
+        }
     }
 }
